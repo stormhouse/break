@@ -10,7 +10,8 @@ import Cocoa
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     let intervel = "50:00"
-    var breaker:Int = 300
+    var intervelSleep = 300
+    var breaker: Int = 300
     var timer:NSTimer?
     var sleeper:NSTimer?
                             
@@ -48,11 +49,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         println("quit")
     }
     func sleep(){
-        self.sleeper = NSTimer.scheduledTimerWithTimeInterval(300, target: self, selector: Selector("wakeup"), userInfo: nil, repeats: false)
+        self.sleeper = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("sleepToggle"), userInfo: nil, repeats: true)
     }
     func wakeup(){
         self.timerLabel.stringValue = intervel
         self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update"), userInfo: nil, repeats: true)
+    }
+    func sleepToggle(){
+        if(self.breaker%2 == 0){
+            self.statusBarItem.title = "time out"
+        }else{
+            self.statusBarItem.title = " "
+        }
+        if(self.breaker == 0){
+            breaker = intervelSleep
+            self.sleeper!.invalidate()
+            self.wakeup()
+        }
+        breaker = breaker-1
+        
     }
     func update(){
         var text:String = timerLabel.stringValue as String
