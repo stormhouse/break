@@ -38,7 +38,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menuItem.title = "Quit"
         menuItem.action = Selector("setWindowVisible:")
         menuItem.keyEquivalent = ""
+        menuItem.state = 1;
         menu.addItem(menuItem)
+        
+        menu.addItem(NSMenuItem.separatorItem());
+        menu.addItemWithTitle("About", action: Selector("orderFrontStandardAboutPanel:"), keyEquivalent: "")
+        menu.addItemWithTitle("Quit", action: Selector("terminate:"), keyEquivalent: "")
     }
 
     func applicationWillTerminate(aNotification: NSNotification?) {
