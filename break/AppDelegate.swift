@@ -23,10 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var menu: NSMenu = NSMenu()
     var menuItem : NSMenuItem = NSMenuItem()
     
-    func applicationDidFinishLaunching(aNotification: NSNotification?) {
-        
-        self.window!.orderOut(self)
-
+    override func awakeFromNib() {
         self.wakeup()
 //        statusItem: NSStatusItem =statusBar.statusItemWithLength(CGFloat(NSVariableStatusItemLength))
         statusBarItem = statusBar.statusItemWithLength(-1)
@@ -35,15 +32,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusBarItem.highlightMode = true
         
         //Add menuItem to menu
-        menuItem.title = "Quit"
-        menuItem.action = Selector("setWindowVisible:")
+        menuItem.title = "Preference"
+        menuItem.action = Selector("setWindowVisible")
         menuItem.keyEquivalent = ""
-        menuItem.state = 1;
+//        menuItem.state = 1
         menu.addItem(menuItem)
         
-        menu.addItem(NSMenuItem.separatorItem());
+        menu.addItem(NSMenuItem.separatorItem())
+        var restartItem = NSMenuItem()
+        restartItem.title = "Restart"
+        restartItem.keyEquivalent = "s"
+
+        
+        var postponeItem = NSMenuItem()
+        postponeItem.title = "Postpone"
+        postponeItem.keyEquivalent = "p"
+        menu.addItem(restartItem)
+        menu.addItem(postponeItem)
+        
+        menu.addItem(NSMenuItem.separatorItem())
         menu.addItemWithTitle("About", action: Selector("orderFrontStandardAboutPanel:"), keyEquivalent: "")
         menu.addItemWithTitle("Quit", action: Selector("terminate:"), keyEquivalent: "")
+    }
+    
+    func applicationDidFinishLaunching(aNotification: NSNotification?) {
+        self.window!.orderOut(self)
     }
 
     func applicationWillTerminate(aNotification: NSNotification?) {
@@ -51,7 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func setWindowVisible(){
-        println("quit")
+        self.window!.orderFront(self)
     }
     func sleep(){
         self.sleeper = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("sleepToggle"), userInfo: nil, repeats: true)
@@ -101,7 +114,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         var lastResult = mStr!+":"+sStr!
         statusBarItem.title = lastResult
         timerLabel.stringValue = lastResult
-
     }
 
 }
